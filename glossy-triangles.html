@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Glossy Tetrahedrons</title>
+	<style>
+		body{margin: 0;}
+		canvas { width: 100%; height:100%; display:block;}
+	</style>
+</head>
+<body>
+	<script type="text/javascript" src="three.js"></script>
+	<script type="text/javascript">
+		var number = 100;
+		var minSize = 0.5;
+		var size = 1;
+		var speed = 1;
+
+		// document.addEventListener("mousemove", mouseMoveHandler, false);
+		var scene = new THREE.Scene();
+		var camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
+		var renderer = new THREE.WebGLRenderer();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		document.body.appendChild(renderer.domElement);
+
+		var arr = [];
+
+		//lights
+		//TODO refine light position
+		var light = new THREE.PointLight(0xffffff,1,100);
+		light.position.set(0,0,6);
+		scene.add(light);
+
+		function randomColor(){
+			return new THREE.Color("rgb(" + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + "," + Math.floor(Math.random()*255) + ")");
+		}
+
+		function tetrahedron(radius){
+			var geometry = new THREE.TetrahedronBufferGeometry(radius);
+			var material = new THREE.MeshPhongMaterial({ color: randomColor(), specular: 0x050505, shininess: 100});
+			var newTetrahedron = new THREE.Mesh(geometry,material);
+			newTetrahedron.rotation.x = Math.random()*5;
+			newTetrahedron.rotation.y = Math.random()*5;
+			newTetrahedron.position.x = (0.5-Math.random())*10;
+			newTetrahedron.position.y = Math.random()*40-5;
+			newTetrahedron.position.z = -Math.random()*15+3;
+			newTetrahedron.position.x = (0.5-Math.random())*((3-newTetrahedron.position.z)*10/15+10);
+			newTetrahedron.rotSpeed = Math.random()*0.01+0.005;
+			scene.add(newTetrahedron);
+			arr.push(newTetrahedron);
+		}
+
+		camera.position.z = 5;
+
+		//creating the tetrahedrons
+		for(let i = 0; i < number;i++){
+			tetrahedron(Math.random()*size+minSize,false);
+		}
+
+		// function mouseMoveHandler(e) {
+		// 	console.log(e.clientX);
+		// 	light.position.set((1-e.clientX/window.innerWidth)*20,0,6);
+		// }
+
+		function animate() {
+			requestAnimationFrame(animate);
+			for(let i = 0; i < arr.length; i++){
+				arr[i].rotation.y += arr[i].rotSpeed*speed;
+				arr[i].position.y -= 0.01*speed;
+				if(arr[i].position.y < -20){
+					arr[i].position.y = 20;
+				}
+			}
+			renderer.render(scene,camera);
+		}
+
+		animate();
+	</script>
+</body>
+</html>

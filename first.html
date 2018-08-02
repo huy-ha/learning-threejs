@@ -46,8 +46,8 @@
 
 	function animate() {
 		requestAnimationFrame(animate);
-		cube.rotation.x +=0.001;
-		cube.rotation.y += 0.001;
+		cube.rotation.x +=0.01;
+		cube.rotation.y += 0.01;
 		light.position.set(radius * Math.sin(angle), radius * Math.cos(angle),radius * Math.cos(angle));
 		renderer.render(scene,camera);
 		light2.position.set(radius * Math.sin(1.5*angle), radius * Math.cos(angle*0.5),radius * Math.sin(0.2*angle));

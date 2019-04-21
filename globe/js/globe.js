@@ -42,7 +42,7 @@ function init(){
 
     control = new function(){
         this.rotationSpeed = 0.001;
-	this.cloudSpeed = -0.0002;
+        this.cloudSpeed = -0.0002;
     };
 
     addLights()
